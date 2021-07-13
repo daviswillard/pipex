@@ -5,8 +5,10 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 
-int		pipex(char **argv);
+int		pipex(char **argv, char **envp);
 
 char	*rd_arg1(char **argv);
+
+char	**get_env(char **envp);
 
 #endif

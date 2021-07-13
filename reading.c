@@ -8,15 +8,15 @@ char	*rd_arg1(char **argv)
 	char	*line;
 	char	*tmp;
 
-	if (access(argv[1], 4))
-		return (ft_strdup("permission denied\n"));
-	fd = open(argv[1], O_RDWR);
+	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
 		return (ft_strdup("permission denied\n"));
 	line = ft_calloc(1, 1);
 	redd = read(fd, buffer, 100);
 	while (redd > 0)
 	{
+		if (!line)
+			exit(-1);
 		buffer[redd] = '\0';
 		tmp = line;
 		line = ft_strjoin(line, buffer);
@@ -24,7 +24,7 @@ char	*rd_arg1(char **argv)
 		redd = read(fd, buffer, 100);
 	}
 	if (redd < 0)
-		return ("read error\n");
+		return (ft_strdup("read error\n"));
 	close(fd);
 	return (line);
 }
