@@ -23,7 +23,6 @@ static char	*combine(char *ret, char *divv, char **split)
 
 char	*ft_unite(char **split, char div)
 {
-	char	*temp;
 	char	*ret;
 	char	*divv;
 
