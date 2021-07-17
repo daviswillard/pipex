@@ -22,7 +22,10 @@ static void	freedom(char **ret, char *s, char c)
 
 	count = 0;
 	while (count < word_counter(s, c))
+	{
 		free(ret[count]);
+		ret[count++] = NULL;
+	}
 	ret = NULL;
 	free(ret);
 }
@@ -96,7 +99,7 @@ char	**ft_split(char const *s, char c)
 			ret[count++] = word_filler(s, c, ind);
 			if (ret[count - 1] == NULL)
 				freedom(ret, (char *)s, c);
-			if (ret == NULL)
+			if (!ret)
 				return (NULL);
 			ind += ft_length(s, c, ind);
 		}

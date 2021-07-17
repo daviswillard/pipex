@@ -11,4 +11,6 @@ char	*rd_arg1(char **argv);
 
 char	**get_env(char **envp);
 
+char	**get_args(char **argv);
+
 #endif
