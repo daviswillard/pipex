@@ -2,7 +2,8 @@ NAME = pipex.a
 LIBFT = libft.a
 LIB_DIR = ./libft/
 CFLAGS = -Wall -Wextra -Werror -MMD
-SRCS = pipex.c reading.c
+SRCS = pipex.c reading.c \
+		get_func.c
 
 OBJS = ${SRCS:.c=.o}
 DEP = $(SRCS:.c=.d)
@@ -13,8 +14,9 @@ $(LIBFT):
 	$(MAKE) all -C $(LIB_DIR)
 	$(MAKE) bonus -C $(LIB_DIR)
 $(NAME): $(OBJS)
-	cp $(LIB_DIR)$(LIBFT) $(NAME)
+	cp ./libft/libft.a $(NAME)
 	ar -rcs $(NAME) $?
+	$(MAKE) clean
 clean:
 	$(MAKE) clean -C $(LIB_DIR)
 	rm -rf $(OBJS) $(DEP)
