@@ -16,7 +16,6 @@ $(LIBFT):
 $(NAME): $(OBJS)
 	cp ./libft/libft.a $(NAME)
 	ar -rcs $(NAME) $?
-	$(MAKE) clean
 clean:
 	$(MAKE) clean -C $(LIB_DIR)
 	rm -rf $(OBJS) $(DEP)
