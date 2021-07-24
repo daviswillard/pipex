@@ -1,5 +1,7 @@
 #ifndef PIPEX_H
 # define PIPEX_H
+# define INPUT_END 1
+# define OUTPUT_END 0
 
 # include "./libft/libft.h"
 # include <sys/wait.h>
@@ -9,7 +11,7 @@
 
 int		pipex(char **argv, char **envp);
 
-int		fd_arg1(char **argv);
+int		fd_arg(char **argv, int *fd);
 
 char	**get_env(char **envp);
 

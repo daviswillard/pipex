@@ -27,23 +27,24 @@ static char	*flnm(char **env, char *filename)
 
 int	pipex(char **argv, char **envp)
 {
-	int		argd;
 	char	**env;
-	pid_t	pid;
 	char	**args;
 	char	*filename;
+	int		fd[2];
 
-	fd_arg1(argv);
 	env = get_env(envp);
 	args = ft_split(argv[2], ' ');
+	pipe(fd);
+	fd_arg(argv, fd);
 	if (!args)
 		return (-1);
 	filename = flnm(env, args[0]);
-	pid = fork();
-	if (pid == 0)
+	if (fork())
 	{
+		close(fd[INPUT_END]);
+		dup2(STDIN_FILENO, fd[OUTPUT_END]);
+		close(fd[OUTPUT_END]);
 		execve(filename, args, NULL);
-		ft_putstr_fd("Command not found", 1);
 	}
 	else
 		waitpid(0, NULL, 0);
