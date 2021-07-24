@@ -35,18 +35,35 @@ int	pipex(char **argv, char **envp)
 	env = get_env(envp);
 	args = ft_split(argv[2], ' ');
 	pipe(fd);
-	fd_arg(argv, fd);
+	fd_arg(argv);
 	if (!args)
 		return (-1);
 	filename = flnm(env, args[0]);
 	if (fork())
 	{
-		close(fd[INPUT_END]);
-		dup2(STDIN_FILENO, fd[OUTPUT_END]);
 		close(fd[OUTPUT_END]);
+		dup2(fd[INPUT_END], STDOUT_FILENO);
+		close(fd[INPUT_END]);
 		execve(filename, args, NULL);
 	}
 	else
-		waitpid(0, NULL, 0);
+	{
+		if (fork())
+		{
+			args = ft_split(argv[3], ' ');
+			if (!args)
+				return (-1);
+			filename = flnm(env, args[0]);
+			fd_arg2(argv, fd);
+			execve(filename, args, NULL);
+		}
+		else
+		{
+			waitpid(0, NULL, 0);
+			waitpid(0, NULL, 0);
+			close(fd[INPUT_END]);
+			close(fd[INPUT_END]);
+		}
+	}
 	return (0);
 }
