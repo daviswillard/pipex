@@ -9,7 +9,7 @@
 # include <stdio.h>
 # include <string.h>
 
-int		pipex(char **argv, char **envp);
+int		pipex(char **argv, char **envp, char *filename);
 
 int		fd_arg(char **argv);
 

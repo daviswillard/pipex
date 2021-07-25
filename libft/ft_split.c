@@ -16,18 +16,18 @@ static int	word_counter(char const *s, char c);
 static int	ft_length(char const *s, char c, int index);
 static char	*word_filler(char const *s, char c, int index);
 
-static void	freedom(char **ret, char *s, char c)
+static void	freedom(char ***ret, char *s, char c)
 {
 	int	count;
 
 	count = 0;
 	while (count < word_counter(s, c))
 	{
-		free(ret[count]);
-		ret[count++] = NULL;
+		free(*ret[count]);
+		*ret[count++] = NULL;
 	}
-	ret = NULL;
-	free(ret);
+	free(*ret);
+	*ret = NULL;
 }
 
 static int	word_counter(char const *s, char c)
@@ -98,7 +98,7 @@ char	**ft_split(char const *s, char c)
 		{
 			ret[count++] = word_filler(s, c, ind);
 			if (ret[count - 1] == NULL)
-				freedom(ret, (char *)s, c);
+				freedom(&ret, (char *)s, c);
 			if (!ret)
 				return (NULL);
 			ind += ft_length(s, c, ind);

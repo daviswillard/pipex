@@ -1,5 +1,19 @@
 #include "../pipex.h"
 
+static void	freedom(char ***ret)
+{
+	int	count;
+
+	count = 0;
+	while (**ret)
+	{
+		free(**ret);
+		*(*ret)++ = NULL;
+	}
+	free(**ret);
+	*ret = NULL;
+}
+
 static char	*flnm(char **env, char *filename)
 {
 	int		check;
@@ -25,49 +39,59 @@ static char	*flnm(char **env, char *filename)
 	return (temp);
 }
 
-int	pipex(char **argv, char **envp)
+static void	last_fork(char ***args, int *fd, char *filename)
+{
+	close(fd[INPUT_END]);
+	wait(NULL);
+	if (!fork())
+	{
+		close(fd[INPUT_END]);
+		dup2(fd[OUTPUT_END], STDIN_FILENO);
+		close(fd[OUTPUT_END]);
+		execve(filename, *args, NULL);
+	}
+	else
+		wait(NULL);
+}
+
+static void	argnfln(char *argv, char **env, char ***args, char **filename)
+{
+		if (*args)
+			freedom(args);
+		if (argv)
+			*args = ft_split(argv, ' ');
+		if (!(*args) && argv)
+			exit(-1);
+		if (*filename)
+			free(*filename);
+		if (argv)
+			*filename = flnm(env, *args[0]);
+}
+
+int	pipex(char **argv, char **envp, char *filename)
 {
 	char	**env;
 	char	**args;
-	char	*filename;
 	int		fd[2];
 
+	args = NULL;
 	env = get_env(envp);
-	args = ft_split(argv[2], ' ');
 	pipe(fd);
 	fd_arg(argv);
-	if (!args)
-		return (-1);
-	filename = flnm(env, args[0]);
+	argnfln(argv[2], env, &args, &filename);
 	if (!fork())
 	{
+		close(fd[OUTPUT_END]);
 		dup2(fd[INPUT_END], STDOUT_FILENO);
 		close(fd[INPUT_END]);
-		close(fd[OUTPUT_END]);
 		execve(filename, args, NULL);
 	}
 	else
 	{
-		close(fd[INPUT_END]);
 		fd_arg2(argv);
-		if (!fork())
-		{
-			args = ft_split(argv[3], ' ');
-			if (!args)
-				return (-1);
-			filename = flnm(env, args[0]);
-			close(fd[INPUT_END]);
-			dup2(fd[OUTPUT_END], STDIN_FILENO);
-			close(fd[OUTPUT_END]);
-			execve(filename, args, NULL);
-		}
-		else
-		{
-			wait(NULL);
-			wait(NULL);
-			close(fd[INPUT_END]);
-			close(fd[OUTPUT_END]);
-		}
+		argnfln(argv[3], env, &args, &filename);
+		last_fork(&args, fd, filename);
 	}
+	argnfln(NULL, env, &args, &filename);
 	return (0);
 }
