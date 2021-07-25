@@ -1,4 +1,4 @@
-NAME = pipex.a
+NAME = libftpipex.a
 LIBFT = libft.a
 LIB_DIR = ./libft/
 CFLAGS = -Wall -Wextra -Werror
@@ -15,7 +15,7 @@ $(LIBFT):
 	$(MAKE) bonus -C $(LIB_DIR)
 $(NAME): $(OBJS)
 	cp ./libft/libft.a $(NAME)
-	ar -rcs $(NAME) $?
+	ar -rcs $(NAME) $(OBJS)
 	gcc $(CFLAGS) $(NAME) -o pipex
 clean:
 	$(MAKE) clean -C $(LIB_DIR)
