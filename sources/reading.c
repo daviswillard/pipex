@@ -8,7 +8,7 @@ int	fd_arg(char **argv)
 	if (file1 < 0)
 	{
 		ft_putendl_fd("Permission denied. Check filenames: are pathnames "
-			"absolute?", 1);
+			"absolute?", 2);
 		exit (-1);
 	}
 	dup2(file1, STDIN_FILENO);
@@ -24,7 +24,7 @@ int	fd_arg2(char **argv)
 	if (file2 < 0)
 	{
 		ft_putendl_fd("Permission denied. Check filenames: are pathnames "
-			"absolute?", 1);
+			"absolute?", 2);
 		exit (-1);
 	}
 	dup2(file2, STDOUT_FILENO);

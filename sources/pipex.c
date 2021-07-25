@@ -65,7 +65,14 @@ static void	argnfln(char *argv, char **env, char ***args, char **filename)
 		if (*filename)
 			free(*filename);
 		if (argv)
+		{
 			*filename = flnm(env, *args[0]);
+			if (!*filename)
+			{
+				ft_putendl_fd("command doesn't exist in your $PATH",  2);
+				exit(-1);
+			}
+		}
 }
 
 int	pipex(char **argv, char **envp, char *filename)
