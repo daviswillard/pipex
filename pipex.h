@@ -13,7 +13,7 @@ int		pipex(char **argv, char **envp);
 
 int		fd_arg(char **argv);
 
-int		fd_arg2(char **argv, int *fd);
+int		fd_arg2(char **argv);
 
 char	**get_env(char **envp);
 
