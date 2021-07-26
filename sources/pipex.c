@@ -2,15 +2,15 @@
 
 static void	freedom(char ***ret)
 {
-	int	count;
+	int	counter;
 
-	count = 0;
-	while (**ret)
+	counter = 0;
+	while ((*ret)[counter])
 	{
-		free(**ret);
-		*(*ret)++ = NULL;
+		free((*ret)[counter]);
+		(*ret)[counter++] = NULL;
 	}
-	free(**ret);
+	free(*ret);
 	*ret = NULL;
 }
 
@@ -36,6 +36,7 @@ static char	*flnm(char **env, char *filename)
 			temp = ft_strjoin(env[index++], filename);
 		}
 	}
+	free(filename);
 	return (temp);
 }
 
@@ -56,23 +57,25 @@ static void	last_fork(char ***args, int *fd, char *filename)
 
 static void	argnfln(char *argv, char **env, char ***args, char **filename)
 {
-		if (*args)
-			freedom(args);
-		if (argv)
-			*args = ft_split(argv, ' ');
-		if (!(*args) && argv)
-			exit(-1);
-		if (*filename)
-			free(*filename);
-		if (argv)
+	if (*args)
+		freedom(args);
+	if (argv)
+		*args = ft_split(argv, ' ');
+	if (!(*args) && argv)
+		exit(-1);
+	if (*filename)
+		free(*filename);
+	if (argv)
+	{
+		*filename = flnm(env, *args[0]);
+		if (!*filename)
 		{
-			*filename = flnm(env, *args[0]);
-			if (!*filename)
-			{
-				ft_putendl_fd("command doesn't exist in your $PATH",  2);
-				exit(-1);
-			}
+			ft_putendl_fd("command doesn't exist in your $PATH",  2);
+			exit(-1);
 		}
+	}
+	else
+		freedom(&env);
 }
 
 int	pipex(char **argv, char **envp, char *filename)
