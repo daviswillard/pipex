@@ -6,8 +6,6 @@
 # include "./libft/libft.h"
 # include <sys/wait.h>
 # include <fcntl.h>
-# include <stdio.h>
-# include <string.h>
 
 int		pipex(char **argv, char **envp, char *filename);
 
