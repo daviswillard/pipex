@@ -1,22 +1,19 @@
-NAME = libftpipex.a
+NAME = pipex
 LIBFT = libft.a
 LIB_DIR = ./libft/
-CFLAGS = -Wall -Wextra -Werror
-DFLAG = -MMD
+CFLAGS = -Wall -Wextra -Werror -MMD
 SRCS = ./sources/pipex.c ./sources/reading.c \
 		./sources/get_func.c ./sources/main.c
 OBJS = ${SRCS:.c=.o}
 DEP = $(SRCS:.c=.d)
 all:  $(LIBFT) $(NAME)
 .c.o:
-	gcc $(CFLAGS) $(DFLAG) -c $< -o $@
+	gcc $(CFLAGS) -c $< -o $@
 $(LIBFT):
-	$(MAKE) all -C $(LIB_DIR)
-	$(MAKE) bonus -C $(LIB_DIR)
-$(NAME): $(OBJS)
-	cp ./libft/libft.a $(NAME)
-	ar -rcs $(NAME) $(OBJS)
-	gcc $(CFLAGS) $(NAME) -o pipex
+	$(MAKE) all -sC $(LIB_DIR)
+	$(MAKE) bonus -sC $(LIB_DIR)
+$(NAME): $(OBJS) $(LIBFT)
+	gcc $(CFLAGS) -I. -L$(LIB_DIR) -lft  -o $(NAME)
 clean:
 	$(MAKE) clean -C $(LIB_DIR)
 	rm -rf $(OBJS) $(DEP)
