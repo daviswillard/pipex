@@ -4,23 +4,22 @@ LIB_DIR = ./libft/
 CFLAGS = -Wall -Wextra -Werror -MMD
 SRCS = ./sources/pipex.c ./sources/reading.c \
 		./sources/get_func.c ./sources/main.c
+# BNS_SRCS =
 OBJS = ${SRCS:.c=.o}
 DEP = $(SRCS:.c=.d)
-all:  $(LIBFT) $(NAME)
+all:  $(NAME)
 .c.o:
 	gcc $(CFLAGS) -c $< -o $@
-$(LIBFT):
+$(NAME): $(OBJS)
 	$(MAKE) all -sC $(LIB_DIR)
-	$(MAKE) bonus -sC $(LIB_DIR)
-$(NAME): $(OBJS) $(LIBFT)
-	gcc $(CFLAGS) -I. -L$(LIB_DIR) -lft  -o $(NAME)
+	gcc $(CFLAGS) -I. $(OBJS) -L$(LIB_DIR) -lft -o $(NAME)
 clean:
-	$(MAKE) clean -C $(LIB_DIR)
+	$(MAKE) clean -sC $(LIB_DIR)
 	rm -rf $(OBJS) $(DEP)
 fclean: clean
-	$(MAKE) fclean -C $(LIB_DIR)
+	$(MAKE) fclean -sC $(LIB_DIR)
 	rm -rf $(NAME)
-	rm -rf pipex
+bonus: $(NAME)
 re: fclean all
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
 -include	$(OBJS:.o=.d)

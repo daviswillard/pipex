@@ -6,11 +6,26 @@
 /*   By: dwillard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/05 19:31:32 by dwillard          #+#    #+#             */
-/*   Updated: 2021/10/05 19:32:02 by dwillard         ###   ########.fr       */
+/*   Updated: 2021/10/06 19:00:51 by dwillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../pipex.h"
+
+static void	last_fork(char ***args, int *fd, char *filename)
+{
+	close(fd[INPUT_END]);
+	wait(NULL);
+	if (!fork())
+	{
+		close(fd[INPUT_END]);
+		dup2(fd[OUTPUT_END], STDIN_FILENO);
+		close(fd[OUTPUT_END]);
+		execve(filename, *args, NULL);
+	}
+	else
+		wait(NULL);
+}
 
 static void	freedom(char ***ret)
 {
@@ -34,6 +49,8 @@ static char	*flnm(char **env, char *filename)
 
 	check = 0;
 	index = 0;
+	if (!access(filename, F_OK))
+		return (ft_strdup(filename));
 	filename = ft_strjoin("/", filename);
 	temp = ft_strjoin(env[index], filename);
 	while (!check)
@@ -52,21 +69,6 @@ static char	*flnm(char **env, char *filename)
 	return (temp);
 }
 
-static void	last_fork(char ***args, int *fd, char *filename)
-{
-	close(fd[INPUT_END]);
-	wait(NULL);
-	if (!fork())
-	{
-		close(fd[INPUT_END]);
-		dup2(fd[OUTPUT_END], STDIN_FILENO);
-		close(fd[OUTPUT_END]);
-		execve(filename, *args, NULL);
-	}
-	else
-		wait(NULL);
-}
-
 static void	argnfln(char *argv, char **env, char ***args, char **filename)
 {
 	if (*args)
@@ -82,7 +84,8 @@ static void	argnfln(char *argv, char **env, char ***args, char **filename)
 		*filename = flnm(env, *args[0]);
 		if (!*filename)
 		{
-			ft_putendl_fd("command doesn't exist in your $PATH",  2);
+			ft_putstr_fd("command not found: ", 2);
+			ft_putendl_fd(*args[0], 2);
 			exit(-1);
 		}
 	}
