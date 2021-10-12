@@ -22,7 +22,7 @@
 # include <errno.h>
 # include <stdio.h>
 
-int		pipex(char **argv, char **envp, char *filename);
+int		pipex(char **argv, char **envp, char *filename, int argc);
 
 void	error(char *str);
 
@@ -30,7 +30,7 @@ void	argnfln(char *argv, char **env, char ***args, char **filename);
 
 int		fd_arg(char **argv);
 
-int		fd_arg2(char **argv);
+int		fd_arg2(char **argv, int argc);
 
 char	**get_env(char **envp);
 

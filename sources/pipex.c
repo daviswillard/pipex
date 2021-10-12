@@ -14,9 +14,14 @@
 
 static void	last_fork(char ***args, int *fd, char *filename)
 {
+	int		pid;
+
 	close(fd[INPUT_END]);
 	wait(NULL);
-	if (!fork())
+	pid = fork();
+	if (pid < 0)
+		error(NULL);
+	else if (pid == 0)
 	{
 		close(fd[INPUT_END]);
 		dup2(fd[OUTPUT_END], STDIN_FILENO);
@@ -35,7 +40,7 @@ static void	child(int fd[2], char *filename, char **args)
 	execve(filename, args, NULL);
 }
 
-int	pipex(char **argv, char **envp, char *filename)
+int	pipex(char **argv, char **envp, char *filename, int argc)
 {
 	char	**env;
 	char	**args;
@@ -54,7 +59,7 @@ int	pipex(char **argv, char **envp, char *filename)
 		child(fd, filename, args);
 	else
 	{
-		fd_arg2(argv);
+		fd_arg2(argv, argc);
 		argnfln(argv[3], env, &args, &filename);
 		last_fork(&args, fd, filename);
 	}

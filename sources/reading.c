@@ -24,11 +24,11 @@ int	fd_arg(char **argv)
 	return (0);
 }
 
-int	fd_arg2(char **argv)
+int	fd_arg2(char **argv, int argc)
 {
 	int	file2;
 
-	file2 = open(argv[4], O_RDWR | O_TRUNC | O_CREAT, 0622);
+	file2 = open(argv[argc - 1], O_RDWR | O_TRUNC | O_CREAT, 0622);
 	if (errno)
 		error(NULL);
 	dup2(file2, STDOUT_FILENO);
