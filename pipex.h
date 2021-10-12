@@ -18,8 +18,15 @@
 # include "./libft/libft.h"
 # include <sys/wait.h>
 # include <fcntl.h>
+# include <string.h>
+# include <errno.h>
+# include <stdio.h>
 
 int		pipex(char **argv, char **envp, char *filename);
+
+void	error(char *str);
+
+void	argnfln(char *argv, char **env, char ***args, char **filename);
 
 int		fd_arg(char **argv);
 

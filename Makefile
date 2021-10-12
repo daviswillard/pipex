@@ -3,7 +3,8 @@ LIBFT = libft.a
 LIB_DIR = ./libft/
 CFLAGS = -Wall -Wextra -Werror -MMD
 SRCS = ./sources/pipex.c ./sources/reading.c \
-		./sources/get_func.c ./sources/main.c
+		./sources/get_func.c ./sources/main.c \
+		./sources/filename.c
 # BNS_SRCS =
 OBJS = ${SRCS:.c=.o}
 DEP = $(SRCS:.c=.d)
