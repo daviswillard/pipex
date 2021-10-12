@@ -50,7 +50,7 @@ int	pipex(char **argv, char **envp, char *filename)
 	pid = fork();
 	if (pid < 0)
 		error(NULL);
-	else if	(!pid)
+	else if (!pid)
 		child(fd, filename, args);
 	else
 	{

@@ -1,4 +1,3 @@
-
 #include "../pipex.h"
 
 void	error(char *str)
@@ -40,7 +39,6 @@ static char	*flnm(char **env, char *filename)
 	{
 		if (!filename)
 			error(NULL);
-		printf("%s\n", temp);
 		if (!access(temp, F_OK))
 			check = 1;
 		else
