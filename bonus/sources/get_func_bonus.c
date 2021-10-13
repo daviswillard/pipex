@@ -1,27 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   get_func_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dwillard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/05 19:31:41 by dwillard          #+#    #+#             */
-/*   Updated: 2021/10/05 19:32:04 by dwillard         ###   ########.fr       */
+/*   Created: 2021/10/13 18:42:24 by dwillard          #+#    #+#             */
+/*   Updated: 2021/10/13 18:42:27 by dwillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
+#include "../pipex_bonus.h"
 
-int	main(int argc, char **argv, char **envp)
+char	**get_env(char **envp)
 {
-	char	*filename;
+	int		ind_glob;
+	char	*path;
+	char	**split;
 
-	filename = NULL;
-	if (argc < 5)
-		ft_putstr_fd("Wrong usage, try ./pipex file1 cmd1 cmd2 file2\n", 1);
-	else if (argc < 6 && !ft_strncmp(argv[1], "here_doc", 8))
-		ft_putendl_fd("try ./pipex here_doc LIMITER cmd cmd1 file", 1);
-	else
-		pipex(argv, envp, filename, argc);
-	return (0);
+	ind_glob = 0;
+	path = ft_strnstr(envp[ind_glob++], "PATH", 4);
+	while (!path && envp[ind_glob])
+		path = ft_strnstr(envp[ind_glob++], "PATH", 4);
+	if (!path)
+		error("no $PATH was found in your env");
+	path = ft_strchr(path, '/');
+	split = ft_split(path, ':');
+	if (!split)
+		error(NULL);
+	return (split);
 }

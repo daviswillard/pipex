@@ -70,7 +70,7 @@ void	argnfln(char *argv, char **env, char ***args, char **filename)
 		freedom(args);
 	if (argv)
 		*args = ft_split(argv, ' ');
-	if (errno)
+	if (!*args && argv)
 		error(NULL);
 	if (*filename)
 		free(*filename);

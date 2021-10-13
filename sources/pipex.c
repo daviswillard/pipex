@@ -12,7 +12,7 @@
 
 #include "../pipex.h"
 
-static void	last_fork(char ***args, int *fd, char *filename)
+static void	last_fork(char **args, int *fd, char *filename)
 {
 	int		pid;
 
@@ -26,10 +26,15 @@ static void	last_fork(char ***args, int *fd, char *filename)
 		close(fd[INPUT_END]);
 		dup2(fd[OUTPUT_END], STDIN_FILENO);
 		close(fd[OUTPUT_END]);
-		execve(filename, *args, NULL);
+		if (execve(filename, args, NULL) < 0)
+			error(NULL);
 	}
 	else
+	{
+		close(fd[OUTPUT_END]);
+		dup2(fd[INPUT_END], STDIN_FILENO);
 		wait(NULL);
+	}
 }
 
 static void	child(int fd[2], char *filename, char **args)
@@ -61,7 +66,7 @@ int	pipex(char **argv, char **envp, char *filename, int argc)
 	{
 		fd_arg2(argv, argc);
 		argnfln(argv[3], env, &args, &filename);
-		last_fork(&args, fd, filename);
+		last_fork(args, fd, filename);
 	}
 	argnfln(NULL, env, &args, &filename);
 	return (0);

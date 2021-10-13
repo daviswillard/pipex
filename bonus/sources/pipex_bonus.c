@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dwillard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/05 19:31:32 by dwillard          #+#    #+#             */
-/*   Updated: 2021/10/06 19:00:51 by dwillard         ###   ########.fr       */
+/*   Created: 2021/10/13 18:42:50 by dwillard          #+#    #+#             */
+/*   Updated: 2021/10/13 18:42:52 by dwillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
+#include "../pipex_bonus.h"
 #include <stdio.h>
 
-static void	last_fork(char ***args, char *filename, char **argv)
+static void	last_fork(char **args, char *filename, char **argv)
 {
 	int		pid;
 	int		fd[2];
@@ -30,7 +30,8 @@ static void	last_fork(char ***args, char *filename, char **argv)
 		close(fd[OUTPUT_END]);
 		dup2(fd[INPUT_END], STDOUT_FILENO);
 		close(fd[INPUT_END]);
-		execve(filename, *args, NULL);
+		if (execve(filename, args, NULL) < 0)
+			error(NULL);
 	}
 	else
 	{
@@ -76,18 +77,19 @@ int	here_doc(char *limiter)
 	reader = fork();
 	if (reader == 0)
 	{
-		close(fd[0]);
+		close(fd[OUTPUT_END]);
 		while (get_next_line(&line, STDIN_FILENO))
 		{
 			if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
 				exit(0);
-			ft_putendl_fd(line, fd[1]);
+			ft_putendl_fd(line, fd[INPUT_END]);
+			free(line);
 		}
 	}
 	else
 	{
-		close(fd[1]);
-		dup2(fd[0], STDIN_FILENO);
+		close(fd[INPUT_END]);
+		dup2(fd[OUTPUT_END], STDIN_FILENO);
 		wait(NULL);
 	}
 	return (3);
@@ -115,7 +117,7 @@ int	pipex(char **argv, char **envp, char *filename, int argc)
 		child(filename, args, fd);
 	}
 	argnfln(argv[argc - 2], env, &args, &filename);
-	last_fork(&args, filename, argv);
+	last_fork(args, filename, argv);
 	argnfln(NULL, env, &args, &filename);
 	return (0);
 }

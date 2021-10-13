@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dwillard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/12 20:14:28 by dwillard          #+#    #+#             */
-/*   Updated: 2021/10/12 20:14:29 by dwillard         ###   ########.fr       */
+/*   Created: 2021/10/13 18:42:37 by dwillard          #+#    #+#             */
+/*   Updated: 2021/10/13 18:42:39 by dwillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../pipex.h"
+#include "../pipex_bonus.h"
 
 static int	condition_zero(char **line, int fd, char **buf)
 {

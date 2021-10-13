@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dwillard <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/06 19:01:04 by dwillard          #+#    #+#             */
-/*   Updated: 2021/10/06 19:01:28 by dwillard         ###   ########.fr       */
+/*   Created: 2021/10/13 18:41:42 by dwillard          #+#    #+#             */
+/*   Updated: 2021/10/13 18:43:49 by dwillard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 # define INPUT_END 1
 # define OUTPUT_END 0
 # define BUFFER_SIZE 100
 
-# include "./libft/libft.h"
+# include "../libft/libft.h"
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <string.h>
