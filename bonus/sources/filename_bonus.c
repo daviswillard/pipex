@@ -18,6 +18,9 @@ void	error(char *str)
 		ft_putendl_fd(str, 2);
 	if (errno && !str)
 		ft_putendl_fd(strerror(errno), 2);
+	if (!access("here_doc", F_OK))
+		if (unlink("here_doc"))
+			ft_putendl_fd(strerror(errno), 2);
 	exit(errno);
 }
 

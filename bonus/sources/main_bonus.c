@@ -23,5 +23,8 @@ int	main(int argc, char **argv, char **envp)
 		ft_putendl_fd("try ./pipex here_doc LIMITER cmd cmd1 file", 1);
 	else
 		pipex(argv, envp, filename, argc);
+	if (!access("here_doc", F_OK))
+		if (unlink("here_doc"))
+			error(NULL);
 	return (0);
 }
