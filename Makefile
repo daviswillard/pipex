@@ -11,9 +11,9 @@ OBJS = ${SRCS:.c=.o}
 DEP = $(SRCS:.c=.d)
 
 BNS_DIR = bonus/sources/
-BNS_SRCS = $(BNS_DIR)pipex.c $(BNS_DIR)reading.c \
-			$(BNS_DIR)main.c $(BNS_DIR)filename.c \
-			$(BNS_DIR)get_func.c $(BNS_DIR)get_next_line.c
+BNS_SRCS = $(BNS_DIR)pipex_bonus.c $(BNS_DIR)reading_bonus.c \
+			$(BNS_DIR)main_bonus.c $(BNS_DIR)filename_bonus.c \
+			$(BNS_DIR)get_func_bonus.c $(BNS_DIR)get_next_line_bonus.c
 BNS_OBJS = ${BNS_SRCS:.c=.o}
 BNS_DEP = $(BNS_SRCS:.c=.d)
 

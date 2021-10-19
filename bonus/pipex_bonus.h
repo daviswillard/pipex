@@ -37,4 +37,6 @@ char	**get_env(char **envp);
 
 int		get_next_line(char **line, int fd);
 
+void   ft_get_next_line(char *file_name, char *limiter);
+
 #endif

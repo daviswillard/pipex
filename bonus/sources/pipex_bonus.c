@@ -11,34 +11,22 @@
 /* ************************************************************************** */
 
 #include "../pipex_bonus.h"
-#include <stdio.h>
 
 static void	last_fork(char **args, char *filename, char **argv)
 {
 	int		pid;
-	int		fd[2];
 
-	if (pipe(fd) < 0)
-		error(NULL);
-	close(fd[INPUT_END]);
 	fd_arg2(argv);
 	pid = fork();
 	if (pid < 0)
 		error(NULL);
 	else if (pid == 0)
 	{
-		close(fd[OUTPUT_END]);
-		dup2(fd[INPUT_END], STDOUT_FILENO);
-		close(fd[INPUT_END]);
 		if (execve(filename, args, NULL) < 0)
 			error(NULL);
 	}
 	else
-	{
-		close(fd[OUTPUT_END]);
-		dup2(fd[INPUT_END], STDIN_FILENO);
 		wait(NULL);
-	}
 }
 
 static void	child(char *filename, char **args, int fd[2])
@@ -66,26 +54,39 @@ static void	child(char *filename, char **args, int fd[2])
 	}
 }
 
-int	here_doc(char *limiter)
+static void	here_child(char *limiter, int fd[2])
+{
+	char	*line;
+
+	close(fd[OUTPUT_END]);
+	line = NULL;
+	while (get_next_line(&line, STDIN_FILENO))
+	{
+		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+		{
+			free(line);
+			exit(0);
+		}
+		ft_putendl_fd(line, fd[INPUT_END]);
+		free(line);
+	}
+	if (line)
+		free(line);
+	exit(0);
+}
+
+static int	here_doc(char *limiter)
 {
 	pid_t	reader;
 	int		fd[2];
-	char	*line;
 
-	if (pipe(fd) == -1)
+	if (pipe(fd) < 0)
 		error(NULL);
 	reader = fork();
-	if (reader == 0)
-	{
-		close(fd[OUTPUT_END]);
-		while (get_next_line(&line, STDIN_FILENO))
-		{
-			if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
-				exit(0);
-			ft_putendl_fd(line, fd[INPUT_END]);
-			free(line);
-		}
-	}
+	if (reader < 0)
+		error(NULL);
+	else if (!reader)
+		here_child(limiter, fd);
 	else
 	{
 		close(fd[INPUT_END]);
