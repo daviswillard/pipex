@@ -113,8 +113,6 @@ int	pipex(char **argv, char **envp, char *filename, int argc)
 	while (index < argc - 2)
 	{
 		argnfln(argv[index++], env, &args, &filename);
-		if (pipe(fd) < 0)
-			error(NULL);
 		child(filename, args, fd);
 	}
 	argnfln(argv[argc - 2], env, &args, &filename);
