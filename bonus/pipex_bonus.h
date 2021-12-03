@@ -21,7 +21,6 @@
 # include <fcntl.h>
 # include <string.h>
 # include <errno.h>
-# include <stdio.h>
 
 int		pipex(char **argv, char **envp, char *filename, int argc);
 
